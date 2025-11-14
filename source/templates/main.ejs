@@ -1,0 +1,16 @@
+<%- include('includes/header.ejs') %>
+        <h1>TO-DO</h1>
+        <% for (let t of todos) { %>
+        <article class="card">
+                <header>
+                        <h2><a href="/<%= t._id %>/"><%= t.title %></a></h2>
+                </header>
+                <footer>
+                        <% if (t.desc) { %></p>
+                        <p><%= t.desc %></p>
+                        <% } %>
+                        <p><%= (new Date(t.createdAt)).toLocaleString() %></p>
+                </footer>
+        </article>
+        <% } %>
+<%- include('includes/footer.ejs') %>
