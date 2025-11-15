@@ -1,4 +1,8 @@
 <%- include('includes/header.ejs') %>
+        <form method="get" style="text-align: right;">
+        <input name="search" value="<%= searchQuery %>" style="display: inline; width: 200px;">
+        <input type="submit" value="search" style="display: inline;">
+        </form>
         <h1>TO-DO</h1>
         <% for (let t of todos) { %>
         <article class="card">

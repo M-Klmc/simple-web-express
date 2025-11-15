@@ -3,10 +3,19 @@
 import { getList, getItem } from "../models/todos.js";
 
 export function mainPage(req, res) {
-  res.render("main", {
-    todos: getList(),
-    title: "mainPage",
-  });
+  let list = getList();
+
+  if (req.query.search) {
+    const q = req.query.search.toLowerCase();
+    list = list.filter(el => {
+    return el.title.toLowerCase().includes(q) || (el.desc && el.desc.toLowerCase().includes(q))
+    });
+  }
+    res.render('main', {
+    todos: list,
+    title: 'MainPage',   
+    searchQuery: req.query.search || ''
+  })
 }
 
 export function detailPage(req, res) {
