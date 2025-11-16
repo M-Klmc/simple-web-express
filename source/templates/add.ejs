@@ -1,0 +1,14 @@
+<%- include('includes/header.ejs') %>
+<label>
+    <h1>Add Case</h1>
+    <form action="/add" method="post">
+        <label>Title</label>
+        <input name="title">
+        <label>Description</label>
+        <textarea name="desc"></textarea>
+        <div style="text-align: right;">
+            <input type="submit" value="Add">
+        </div>
+    </form>
+</label>
+<%- include('includes/footer.ejs') %>

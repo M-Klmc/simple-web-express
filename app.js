@@ -23,3 +23,4 @@ app.use("/", router);
 app.listen(port);
 
 app.enable('async');
+

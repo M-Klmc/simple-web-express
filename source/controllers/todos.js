@@ -1,6 +1,6 @@
 // controllers
 
-import { getList, getItem } from "../models/todos.js";
+import { getList, getItem, addItem, setDoneItem, deleteItem } from "../models/todos.js";
 
 export function mainPage(req, res) {
   let list = getList();
@@ -36,4 +36,34 @@ function errorPage(req, res) {
   res.render("404", {
     title: "ERROR",
   });
+}
+
+//----------------------
+
+export function addPage (req, res) {
+  res.render('add', {title: "Add Case" });
+}
+
+export function add(req, res) {
+  const todo = {
+    title: req.body.title,
+    desc: req.body.desc || '',
+    createdAt: (new Date()).toString()
+  };
+  addItem(todo);
+  res.redirect('/');
+}
+
+export function setDone(req, res) {
+  if (setDoneItem(req.params.id))
+    res.redirect('/');
+  else
+    errorPage(req, res);
+}
+
+export function remove(req, res) {
+  if (deleteItem(req.params.id))
+    res.redirect('/');
+  else
+    errorPage(req, res);
 }

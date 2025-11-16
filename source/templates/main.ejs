@@ -7,13 +7,27 @@
         <% for (let t of todos) { %>
         <article class="card">
                 <header>
+                        <% if(t.done) { %>
+                        <h2><del><a href="/<%= t._id %>/"><%= t.title %></a></del></h2>
+                        <% } else { %>
                         <h2><a href="/<%= t._id %>/"><%= t.title %></a></h2>
+                        <% } %>
                 </header>
                 <footer>
                         <% if (t.desc) { %></p>
                         <p><%= t.desc %></p>
                         <% } %>
                         <p><%= (new Date(t.createdAt)).toLocaleString() %></p>
+                        <div style="text-align: right;">
+                                <% if(!t.done) { %>
+                                <form action="/<%= t._id %>?_method=PUT/" method="post" style="display: inline;">
+                                        <input type="submit" class="succsess" value="Done!">
+                                </form>
+                                <% } %>
+                                <form action="/<%= t._id %>?_method=DELETE/" method="post" style="display: inline;">
+                                        <input type="submit" class="warning" value="Delete">
+                                </form>
+                        </div>
                 </footer>
         </article>
         <% } %>
