@@ -20,11 +20,11 @@
                         <p><%= (new Date(t.createdAt)).toLocaleString() %></p>
                         <div style="text-align: right;">
                                 <% if(!t.done) { %>
-                                <form action="/<%= t._id %>?_method=PUT/" method="post" style="display: inline;">
+                                <form action="/<%= t._id %>?_method=PUT" method="POST" style="display: inline;">
                                         <input type="submit" class="succsess" value="Done!">
                                 </form>
                                 <% } %>
-                                <form action="/<%= t._id %>?_method=DELETE/" method="post" style="display: inline;">
+                                <form action="/<%= t._id %>?_method=DELETE" method="POST" style="display: inline;">
                                         <input type="submit" class="warning" value="Delete">
                                 </form>
                         </div>

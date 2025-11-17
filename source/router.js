@@ -9,15 +9,16 @@ const router = Router();
 
 router.use(urlencoded({ extended: true }));
 router.use(methodOverride('_method'));
-//--------------------------------
+
 router.get('/add', addPage);
 router.post('/add', add);
-//--------------------------------
+
 router.get("/:id", detailPage);
-router.get("/", mainPage);
-//--------------------------------
+router.post('/:id', setDone);
 router.put('/:id', setDone);
 router.delete('/:id', remove);
+
+router.get("/", mainPage);
 
 
 export default router;

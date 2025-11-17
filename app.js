@@ -18,6 +18,9 @@ app.locals.appTitle = process.env.APPTITLE || 'Express';
 app.set("view engine", "ejs");
 app.set("views", "./source/templates");
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/", router);
 
 app.listen(port);
