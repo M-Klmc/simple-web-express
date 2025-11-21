@@ -1,10 +1,19 @@
 import createError from 'http-errors';
 
 import { getList, getItem, addItem, setDoneItem, deleteItem }
-       from '../models/todos.js';
+    from '../models/todos.js';
 
 export function mainPage(req, res) {
     let list = getList();
+    if(req.cookies.doneAtLast === '1') {
+        list = [...list];
+        list.sort((el1, el2) => {
+            if (el1.done !== el2.done) {
+                return el1.done ? 1: -1;
+            }
+            return new Date(el1.createdAt) - new Date(el2.createdAt);
+        })
+    }
 
     if (req.query.search) {
         const q = req.query.search.toLowerCase();
@@ -63,4 +72,9 @@ export function remove(req, res) {
         res.redirect('/');
     else
         throw createError(404, 'Запрошенное дело не существует');
+}
+
+export function setOrder(req, res) {
+    res.cookie('doneAtLast', req.body.done_at_last);
+    res.redirect('/');
 }

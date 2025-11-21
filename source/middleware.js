@@ -8,7 +8,7 @@ export function requestToContext(req, res, next) {
 export function handleErrors(req, res, next) {
     const r = validationResult(req);
     if(!r.isEmpty()) {
-        res.redirect('back');
+        return res.redirect('back');
     }
     else {
         req.body = matchedData(req);

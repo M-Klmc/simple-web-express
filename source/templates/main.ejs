@@ -3,13 +3,22 @@
             <input name="search" value="<%= req.query.search %>">
             <input type="submit" value="Найти">
         </form>
+        <form action="/setorder" method="post" class="horizontal">
+            <% if (req.cookies.doneAtLast == '1') { %>
+            <input type="hidden" name="done_at_last" value="0">
+            <input type="submit" value="Вывести все дела вместе">
+            <% } else { %>
+                <input type="hidden" name="done_at_last" value="1">
+                <input type="submit" value="Вывести выполненные дела в конце">
+            <% } %>
+        </form>
         <h1 class="heading">Запланированные дела</h1>
         <% for (let t of todos) { %>
         <article class="card">
             <header>
                 <% if(t.done) { %>
                 <h2><del><a href="/<%= t._id %>/">
-                         <%= t.title %></a></del></h2>
+                            <%= t.title %></a></del></h2>
                 <% } else { %>
                 <h2><a href="/<%= t._id %>/"><%= t.title %></a></h2>
                 <% } %>
@@ -22,15 +31,15 @@
                 <div class="horizontal">
                     <% if(!t.done) { %>
                     <form action="/<%= t._id %>?_method=PUT"
-                          method="post">
+                            method="post">
                         <input type="submit" class="success"
-                               value="Сделано!">
+                                value="Сделано!">
                     </form>
                     <% } %>
                     <form action="/<%= t._id %>?_method=DELETE"
-                          method="post">
+                            method="post">
                         <input type="submit" class="warning"
-                               value="Удалить">
+                                value="Удалить">
                     </form>
                 </div>
             </footer>
