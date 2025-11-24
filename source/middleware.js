@@ -7,13 +7,18 @@ export function requestToContext(req, res, next) {
 
 export async function handleErrors(req, res, next) {
     const r = validationResult(req);
-    if(!r.isEmpty()) {
-        await req.flash('errors', r.mapped());
+    if(!r.isEmpty() || req.errObj) {
+        const t = {
+            ...r.mapped(),
+            ...req.errObj
+        };
+        await req.flash('errors', t);
         await req.flash('body', req.body);
-        return res.redirect('/add');
+        res.redirect('back');
+    } else {
+        req.body = matchedData(req);
+        next();
     }
-    req.body = matchedData(req);
-    next();
 }
 
 export function extendFlashAPI(req, res, next) {

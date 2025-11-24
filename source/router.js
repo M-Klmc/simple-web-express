@@ -6,7 +6,7 @@ import { Router, urlencoded, static as staticMiddleware } from 'express';
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
 
-import { mainPage, detailPage, addPage, add, setDone, remove, setOrder }
+import { mainPage, detailPage, addPage, add, setDone, remove, setOrder, addendumWrapper }
        from './controllers/todos.js';
 import { requestToContext, handleErrors, extendFlashAPI, getErrors } from './middleware.js';
 import { todoV } from './validators.js';
@@ -16,7 +16,7 @@ import { cookie } from 'express-validator';
 const FileStore = _fileStore(session);
 
 const router = Router();
-
+router.use('/storage/uploaded', staticMiddleware('/storage/uploaded'))
 router.use(staticMiddleware('public'));
 
 router.use(urlencoded({ extended: true }));
@@ -47,7 +47,7 @@ router.use(flash({sessionKeyName: 'flash-message'}));
 router.use(extendFlashAPI);
 
 router.get('/add', getErrors, addPage);
-router.post('/add',todoV, add);
+router.post('/add', addendumWrapper, todoV, add);
 router.get('/:id', detailPage);
 router.put('/:id', setDone);
 router.delete('/:id', remove);

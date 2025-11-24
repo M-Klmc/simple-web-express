@@ -8,4 +8,9 @@
         <% } %>
         <p class="datetime">Создано: 
                 <%= (new Date(todo.createdAt)).toLocaleString() %></p>
+        <% if (todo.addendum) { %>
+        <p class="addendum">
+                <img src="/storage/uploaded/<%= todo.addendum %>">
+        </p>
+        <% } %>
 <%- include('includes/footer.ejs') %>
