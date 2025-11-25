@@ -8,10 +8,11 @@ import cookieParser from 'cookie-parser';
 
 import { mainPage, detailPage, addPage, add, setDone, remove, setOrder, addendumWrapper }
        from './controllers/todos.js';
-import { requestToContext, handleErrors, extendFlashAPI, getErrors } from './middleware.js';
-import { todoV } from './validators.js';
+import { requestToContext, handleErrors, extendFlashAPI, getErrors, loadCurrentUser, isGuest } from './middleware.js';
+import { todoV, registerV } from './validators.js';
 import { mainErrorHandler, error500Handler } from './error-handlers.js';
 import { cookie } from 'express-validator';
+import { register } from 'node:module';
 
 const FileStore = _fileStore(session);
 
@@ -43,9 +44,13 @@ router.use(session({
               maxAge: 1000 * 60 * 60
        }
 }));
+
 router.use(flash({sessionKeyName: 'flash-message'}));
 router.use(extendFlashAPI);
+router.use(loadCurrentUser);
 
+router.get('/register', isGuest, getErrors, './validators.js');
+router.post('/register', isGuest, registerV, handleErrors, register);
 router.get('/add', getErrors, addPage);
 router.post('/add', addendumWrapper, todoV, add);
 router.get('/:id', detailPage);
