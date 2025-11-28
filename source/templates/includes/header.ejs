@@ -14,6 +14,7 @@
             <% if (req.user) { %>
             <a href="/" class="brand">
                 <span>Список дел</span>
+                <small>(<%= req.user.id %>)</small>
             </a>
             <% } %>
             <input id="bmenub"
@@ -24,8 +25,14 @@
                 <% if (req.user) { %>
                 <a href="/add/"
                     class="button">Добавить дело</a>
-                < } else { %>
-                    <a href="/source/templates/register.ejs" class="button">Зарегестрироваться</a>
+                    <form action="/logout" method="post" class="horizontal">
+                        <input type="submit" class="warning" value="Выйти">
+                    </form>
+                <% } else { %>
+                    <a href="/register" class="button">Зарегестрироваться</a>
+                    <a href="/login" class="button success">Войти</a>
                 <% } %>
             </div>
         </nav>
+
+        

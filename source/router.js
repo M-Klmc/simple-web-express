@@ -8,12 +8,12 @@ import cookieParser from 'cookie-parser';
 
 import { mainPage, detailPage, addPage, add, setDone, remove, setOrder, addendumWrapper }
        from './controllers/todos.js';
-import { requestToContext, handleErrors, extendFlashAPI, getErrors, loadCurrentUser, isGuest } from './middleware.js';
-import { todoV, registerV } from './validators.js';
+import { requestToContext, handleErrors, extendFlashAPI, getErrors, loadCurrentUser, isGuest, isLoggedIn } from './middleware.js';
+import { todoV, registerV, loginV } from './validators.js';
 import { mainErrorHandler, error500Handler } from './error-handlers.js';
 import { cookie } from 'express-validator';
 import { register } from 'node:module';
-import { register as registerHandler, registerPage } from './controllers/users.js';
+import { register as registerHandler, registerPage,loginPage, login, logout  } from './controllers/users.js';
 
 const FileStore = _fileStore(session);
 
@@ -52,6 +52,13 @@ router.use(loadCurrentUser);
 
 router.get('/register', isGuest, getErrors, registerPage);
 router.post('/register', isGuest, registerV, handleErrors, registerHandler);
+router.get('/login', isGuest, getErrors, loginPage);
+router.post('/login', isGuest, loginV, handleErrors, login);
+
+router.use(isLoggedIn);
+
+router.post('/logout', logout);
+
 router.get('/add', getErrors, addPage);
 router.post('/add', addendumWrapper, todoV, add);
 router.get('/:id', detailPage);

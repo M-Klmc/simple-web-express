@@ -88,7 +88,7 @@ export function setDone(req, res) {
         throw createError(404, 'Запрошенное дело не существует');
 }
 
-export async function remove(req, res) {
+export async function remove(req, res, next) {
     try {
         const t = getItem(req.params.id);
         if(!t)

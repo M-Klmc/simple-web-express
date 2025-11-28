@@ -5,6 +5,7 @@ import { writeFile } from 'node:fs/promises';
 import { currentDir } from '../utility.js';
 
 const dataFileName = join(currentDir, 'data', 'todos.json');
+export { dataFileName };
 
 const dataFile = readFileSync(dataFileName, 'utf8');
 const database = JSON.parse(dataFile);
