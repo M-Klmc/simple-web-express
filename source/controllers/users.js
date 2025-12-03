@@ -2,6 +2,7 @@ import { randomBytes } from 'node:crypto';
 
 import { pbkdf2Promisified } from '../utility.js';
 import { addUser, removeUser } from '../models/users.js';
+import { remove } from './todos.js';
 
 
 export async function registerPage (req, res) {
@@ -16,7 +17,7 @@ export async function register(req, res) {
         password: hash,
         salt: salt
     };
-    addUser(user);
+    await addUser(user);
     res.redirect('/login');
 }
 
@@ -58,19 +59,28 @@ export function logout (req, res, next) {
     })
 }
 
-export function deleteUser(req, res, next) {
-    const userRemoved = removeUser(req.user.id);
+export async function deleteUser(req, res, next) {
+    try {
+        const username = req.session.user?.id;
+        if(!username) {
+            return res.status(401).send('Пользователь не аутентифицирован');
+        }
+        const userRemoved = await removeUser(username);
 
-    if (userRemoved) {
-        delete req.session.user;
-        req.session.save((err) => {
-            if(err) {
-                next(err);
-            } else {
-                res.redirect('/');
-            }
-        });
-    } else {
-        res.status(404).send('Пользователь не найден');
+        if(userRemoved) {
+            delete req.session.user;
+            req.session.save((err) => {
+                if(err) {
+                    next(err);
+                } else {
+                    res.redirect('/');
+                }
+            });
+        } else {
+            res.status(404).send('Пользователь не найден');
+        }
+    } catch (err) {
+        next(err);
     }
+
 }

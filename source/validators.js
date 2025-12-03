@@ -11,8 +11,8 @@ const todoV = [
 export { todoV };
 
 const registerV = [
-    body('username').isString().trim().notEmpty().withMessage('Не указано имя пользователя').custom((value) => {
-        if (getUser(value))
+    body('username').isString().trim().notEmpty().withMessage('Не указано имя пользователя').custom(async (value) => {
+        if (await getUser(value))
             throw new Error('Пользователь с таким именем уже' + 'зарегестрирован...');
         return true;
         }),
@@ -38,8 +38,8 @@ const loginV = [
         }),
     body('password').isString().trim().notEmpty().withMessage('Не указан пароль').custom(async (value, {req}) =>{
         if(req.__user) {
-            const savedPassword = Buffer.from(req.__user.password);
-            const salt = Buffer.from(req.__user.salt);
+            const savedPassword = req.__user.password;
+            const salt = req.__user.salt;
             const password = await pbkdf2Promisified(value, salt, 100000, 32, 'sha256');
             if (timingSafeEqual(savedPassword, password))
                 return true;

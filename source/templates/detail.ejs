@@ -7,7 +7,7 @@
         <p><%= todo.desc %></p>
         <% } %>
         <p class="datetime">Создано: 
-                <%= (new Date(todo.createdAt)).toLocaleString() %></p>
+                <%= todo.createdAt.toLocaleString() %></p>
         <p class="addendum">
                 <img src="/storage/uploaded/<%= todo.addendum %>">
         </p>
