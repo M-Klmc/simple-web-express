@@ -27,14 +27,13 @@ const registerV = [
 export { registerV };
 
 const loginV = [
-    body('username').isString().trim().notEmpty().withMessage('Не указано имя пользователя').custom((value, {req}) => {
-        const user = getUser(value);
+    body('username').isString().trim().notEmpty().withMessage('Не указано имя пользователя').custom(async (value, {req}) => {
+        const user = await getUser(value);
         if (user) {
             req.__user = user;
             return true;
         } else
             throw new Error('Пользователь с таким именем не' + 'найден...');
-        return true;
         }),
     body('password').isString().trim().notEmpty().withMessage('Не указан пароль').custom(async (value, {req}) =>{
         if(req.__user) {

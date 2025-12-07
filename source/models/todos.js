@@ -9,7 +9,7 @@ export async function getItem(id, user) {
 }
 
 export async function addItem(todo) {
-    const oTodo = newTodo(todo);
+    const oTodo = new Todo(todo);
     await oTodo.save();
 }
 
@@ -24,5 +24,6 @@ export async function setDoneItem(id, user) {
 }
 
 export async function deleteItem(id, user) {
-    return await Todo.findOneAndDelete({ _id: id, user: user});
+    const deletedTodo = await Todo.findOneAndDelete({ _id: id, user: user});
+    return deletedTodo !== null;    
 }

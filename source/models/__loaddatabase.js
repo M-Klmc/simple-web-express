@@ -9,6 +9,7 @@ const scTodo = new Schema({
     addendum: String,
     user: {
         type: Schema.Types.ObjectId,
+        ref: 'User',
         index: true
     },
     done: {
@@ -28,10 +29,19 @@ scTodo.index({done: 1, createdAt: 1});
 const scUser = new Schema({
     username: {
         type: String,
+        required: true,
+        unique: true,
+        trim: true,
         index: true
     },
-    password: Buffer,
-    salt: Buffer
+    password: {
+        type: Buffer,
+        required: true
+}, 
+    salt: {
+        type:Buffer,
+        required: true
+    }
 }, {
     versionKey: false
 });

@@ -4,6 +4,14 @@ import { config } from 'dotenv';
 import { connectToDB } from './source/models/__loaddatabase.js';
 import router from './source/router.js';
 
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+});
+
 config();
 
 const port = process.env.PORT || 8000;

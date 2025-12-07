@@ -1,4 +1,5 @@
 import { matchedData, validationResult } from "express-validator";  
+import { User } from "./models/__loaddatabase.js";
 
 export function requestToContext(req, res, next) {
     res.locals.req = req;
@@ -35,8 +36,41 @@ export async function getErrors(req, res, next) {
     next();
 }
 
-export function loadCurrentUser(req, res, next) {
-    req.user = req.session.user;
+export async function loadCurrentUser(req, res, next) {
+    try {
+        if (req.session.user) {
+            let username;
+            
+            if (typeof req.session.user === 'string') {
+                username = req.session.user;
+            } else if (req.session.user && req.session.user.username) {
+                username = req.session.user.username;
+            } else if (req.session.user && req.session.user.id) {
+                username = req.session.user.id;
+            }
+            
+            if (username) {
+                const user = await User.findOne({ username: username });
+                if (user) {
+                    req.user = {
+                        id: user._id,
+                        username: user.username
+                    };
+                } else {
+                    req.user = null;
+                }
+            } else {
+                req.user = null;
+            }
+        } else {
+            req.user = null;
+        }
+    } catch (err) {
+        console.error('Error in loadCurrentUser:', err);
+        req.user = null;
+    }
+    
+    res.locals.user = req.user;
     next();
 }
 
