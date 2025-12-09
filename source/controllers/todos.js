@@ -42,7 +42,7 @@ export async function mainPage(req, res) {
     });
 }
 
-export async function detailPage(req, res) {
+export async function detailPage(req, res, next) {
     try {
         const t = await getItem(req.params.id, req.user.id);
 
@@ -85,7 +85,7 @@ export async function add(req, res) {
     res.redirect('/');
 }
 
-export async function setDone(req, res) {
+export async function setDone(req, res, next) {
     try {
         if ( await setDoneItem(req.params.id, req.user.id))
             res.redirect('/');

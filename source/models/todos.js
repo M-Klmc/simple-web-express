@@ -7,10 +7,7 @@ export async function getList(user, doneAtLast, search) {
     else 
         qTodos.sort('createdAt');
     if (search)
-        qTodos.or([
-            { title: new RegExp(search, 'i' )},
-            { desc: new RegExp(search, 'i' )}
-        ]);
+        qTodos.contains(search);
     return await qTodos;
 }
 
@@ -24,13 +21,7 @@ export async function addItem(todo) {
 }
 
 export async function setDoneItem(id, user) {
-    const todo = await getItem(id, user);
-    if (todo) {
-        todo.done = true;
-        await todo.save();
-        return true;
-    } else
-        return false;
+    return await Todo.findOneAndSetDone(id, user);
 }
 
 export async function deleteItem(id, user) {
